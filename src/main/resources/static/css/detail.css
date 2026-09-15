@@ -37,7 +37,15 @@
 /* [수정] 별점(★/☆) 애니메이션/그라데이션 효과 제거 + 단색 노란색으로 변경 요청으로 수정.
    평점이 0이면 th:each 조건(i <= round(rating))이 항상 false라 전부 '☆'(테두리만 있는 별)로
    렌더링되므로, 별도 처리 없이 color만 지정해도 0점일 때 테두리만 보이는 별로 표시됨 */
-.rating-block .score { font-size:28px; letter-spacing:3px; color:var(--gold); display: inline-block; }
+.rating-block .score { display:inline-flex; gap:2px; }
+/* [수정] 0.5점 단위 반쪽 별 표시 - write.html의 별점 입력 위젯(star-box/half)과 동일한 구조.
+   .half.left/.half.right가 같은 '★' 글자를 겹쳐 그리되 left는 폭을 50%로 잘라서
+   보여주므로, 각 반쪽의 active 여부만 따로 켜면 반 개 채워진 별을 만들 수 있음 */
+.rating-block .star-box { position:relative; display:inline-block; width:28px; height:28px; font-size:28px; line-height:1; color:#444; }
+.rating-block .star-box .half { position:absolute; top:0; left:0; width:100%; height:100%; overflow:hidden; color:inherit; }
+.rating-block .star-box .half.left { width:50%; z-index:2; }
+.rating-block .star-box .half.right { z-index:1; }
+.rating-block .star-box .half.active { color:var(--gold); }
 /* [수정] 숫자 평점도 별점과 동일하게 그라데이션/올라오는 애니메이션 제거 + 단색 노란색으로 변경 */
 .rating-block .stars { font-size:24px; font-weight:800; color:var(--gold); display: inline-block; }
 /* ---------- 리뷰 본문 (대표 이미지 + 텍스트 + 관련작품 뱃지) ---------- */

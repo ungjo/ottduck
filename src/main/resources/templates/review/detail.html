@@ -79,9 +79,14 @@
     -->
     <div class="rating-block">
       <span class="rating-label">작성자 평점</span>
-      <span class="score section-heading"><span
-          th:each="i : ${#numbers.sequence(1, 5)}"
-          th:text="${i <= T(java.lang.Math).round(review.reviewRating ?: 0.0)} ? '★' : '☆'">★</span></span>
+      <!-- [수정] Math.round로 정수 단위로만 반올림되던 문제 수정 - 0.5점 단위(반 개 별)까지 반영되도록 별 하나를
+           반쪽씩(half.left/half.right) 따로 채워서 표시함 -->
+      <span class="score section-heading">
+        <span class="star-box" th:each="i : ${#numbers.sequence(1, 5)}">
+          <span class="half left" th:classappend="${(review.reviewRating ?: 0.0) >= i - 0.5} ? 'active'">★</span>
+          <span class="half right" th:classappend="${(review.reviewRating ?: 0.0) >= i} ? 'active'">★</span>
+        </span>
+      </span>
       <span class="stars section-heading" th:text="${review.reviewRating ?: 0.0}">4.5</span>
       <!-- 작성자 본인에게만 노출 -->
       <div class="owner-actions" style="margin-left:auto" th:if="${session.loginMember != null and session.loginMember.memberId == review.memberId}">
